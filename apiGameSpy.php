@@ -1,7 +1,8 @@
 <?php
 /*
-Cette API a pour but de founir des statistiques sur les joueurs connectés
-au serveur de jeu des Vétérans éviluant sur Arma 3.
+API GameSpy.
+Récupere des informations depuis un serveur Arma 3 et renvoi le résultat
+sous forme d'array.
 */
 
 
@@ -18,7 +19,7 @@ function getInfosFromPrive()
 
 function getvalue($srv_value, $srv_data)
 {
-        // search the value of selected rule and return it
+        // Retourne la valeur du parametre demandé
         $srv_value = array_search ($srv_value, $srv_data);
 
         if ($srv_value === false)
@@ -36,7 +37,7 @@ function parse($p_info)
     $resultats = array();
     $resultats["joueurs"] = array();
 
-    /* Etape 1 : Déterminer le nombre de joueurs présents */
+    // Etape 1 : Déterminer le nombre de joueurs présents
     $nbPlayer = 0;
     $i = 2;
 
@@ -49,7 +50,7 @@ function parse($p_info)
     }
     
 
-    /* Etape 2 : Remplir le tableau des joueurs */
+    // Etape 2 : Remplir le tableau des joueurs
     $i = 0;
     $increment = $nbPlayer + 3;
     $index = 2;
@@ -62,9 +63,6 @@ function parse($p_info)
         array_push($resultats["joueurs"], $arrayJoueur);
         $i++;
     }
-
-
-    /* Etape 3 : On retourne tout ça ! */
 
     return $resultats;
 }
@@ -147,20 +145,15 @@ function getInfosFromServer($addr,$port,$queryport)
                 }
         }
 
-        if ($sock) 
-        {
-                //fclose($sock);
-        }
 
     
         if ($querysuccess)
         {
-            // Interpret server answer
+            // Récuperation des données
             $g_end  = strpos($reply, $playloc) + $playoffset;
             $g_info = substr($reply, 5, $g_end - 5);
             $g_info = explode($split, $g_info);
 
-            // now get the player data
             $p_end  = strlen($reply);
             $p_info = substr($reply, $g_end, $p_end);
             $p_info = explode($split, $p_info);
